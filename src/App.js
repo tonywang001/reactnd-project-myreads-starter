@@ -3,6 +3,7 @@ import { Route, Link } from 'react-router-dom';
 // import * as BooksAPI from './BooksAPI'
 import './App.css';
 import BookShelf from './BookShelf';
+import Book from './Book';
 
 class BooksApp extends React.Component {
   state = {
@@ -96,7 +97,7 @@ class BooksApp extends React.Component {
   };
 
   render() {
-    const { shelfList } = this.state;
+    const { bookList, shelfList } = this.state;
 
     return (
       <div className="app">
@@ -124,7 +125,6 @@ class BooksApp extends React.Component {
         <Route exact path='/search' render={() => (
           <div className="search-books">
             <div className="search-books-bar">
-              {/* <a className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</a> */}
               <Link to='/' className='close-search'>Close</Link>
               <div className="search-books-input-wrapper">
                 {/*
@@ -140,7 +140,15 @@ class BooksApp extends React.Component {
               </div>
             </div>
             <div className="search-books-results">
-              <ol className="books-grid"></ol>
+              <ol className="books-grid">
+                {bookList && bookList.map((book) => (
+                  <li key={book.id}>
+                    <Book id={book.id} title={book.title} authors={book.authors} 
+                          image={book.image} shelfId={book.shelfId}
+                          onMove={(id, shelf) => this.onMove(id, shelf)}/>
+                  </li>
+                ))}
+              </ol>
             </div>
           </div>
         )}/>

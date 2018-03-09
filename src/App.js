@@ -80,7 +80,7 @@ class BooksApp extends React.Component {
       return {
         bookList: state.bookList.map((book) => {
           if (id === book.id) {
-            book.shelf = shelf;
+            book.shelfId = shelf;
           }
           return book;
         })

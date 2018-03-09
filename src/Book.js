@@ -3,24 +3,22 @@ import PropTypes from 'prop-types';
 
 class Book extends React.Component {
     static propTypes = {
+        id: PropTypes.number.isRequired,
         title: PropTypes.string.isRequired,
         authors: PropTypes.string.isRequired,
-        image: PropTypes.string.isRequired
-    };
-
-    state = {
-
+        image: PropTypes.string.isRequired,
+        onMove: PropTypes.func.isRequired
     };
 
     render() {
-        const { title, authors, image } = this.props;
+        const { id, title, authors, image, onMove } = this.props;
 
         return (
             <div className="book">
                 <div className="book-top">
                     <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: image}}></div>
                         <div className="book-shelf-changer">
-                            <select>
+                            <select onChange={(e) => onMove(id, e.target.value)}>
                                 <option value="none" disabled>Move to...</option>
                                 <option value="currentlyReading">Currently Reading</option>
                                 <option value="wantToRead">Want to Read</option>

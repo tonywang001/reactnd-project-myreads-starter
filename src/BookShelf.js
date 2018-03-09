@@ -5,10 +5,12 @@ import Book from './Book';
 class BookShelf extends React.Component {
     static propTypes = {
         title: PropType.string.isRequired,
-        bookList: PropType.array.isRequired
+        bookList: PropType.array.isRequired,
+        onMove: PropType.func.isRequired
     };
 
-    state = {
+    onMove(key, shelf) {
+        this.props.onMove(key, shelf);
     };
 
     render() {
@@ -20,8 +22,10 @@ class BookShelf extends React.Component {
                 <div className="bookshelf-books">
                     <ol className="books-grid">
                         {bookList && bookList.map((book) => (
-                        <li key={book.title}>
-                            <Book title={book.title} authors={book.authors} image={book.image}/>
+                        <li key={book.id}>
+                            <Book id={book.id} title={book.title} authors={book.authors} 
+                                  image={book.image}
+                                  onMove={(id, shelf) => this.onMove(id, shelf)}/>
                         </li>
                         ))}
                     </ol>

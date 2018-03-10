@@ -9,8 +9,11 @@ class BookShelf extends React.Component {
         onMove: PropType.func.isRequired
     };
 
-    onMove(key, shelf) {
-        this.props.onMove(key, shelf);
+    onMove(id, shelf) {
+        console.log('book list: ' + this.props.bookList)
+        const book = this.props.bookList.filter((book) => book.id === id);
+        console.log('book -> ' + book);
+        this.props.onMove(book[0], shelf);
     };
 
     render() {
@@ -24,7 +27,7 @@ class BookShelf extends React.Component {
                         {bookList && bookList.map((book) => (
                         <li key={book.id}>
                             <Book id={book.id} title={book.title} authors={book.authors} 
-                                  image={book.image} shelfId={book.shelfId}
+                                  imageLinks={book.imageLinks} shelfId={book.shelfId}
                                   onMove={(id, shelf) => this.onMove(id, shelf)}/>
                         </li>
                         ))}

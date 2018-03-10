@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 
 class Book extends React.Component {
     static propTypes = {
-        id: PropTypes.number.isRequired,
+        id: PropTypes.string.isRequired,
         title: PropTypes.string.isRequired,
-        authors: PropTypes.string.isRequired,
-        image: PropTypes.string.isRequired,
+        authors: PropTypes.array.isRequired,
+        imageLinks: PropTypes.object.isRequired,
         shelf: PropTypes.string,
         onMove: PropTypes.func.isRequired
     };
@@ -44,14 +44,14 @@ class Book extends React.Component {
     }
 
     render() {
-        const { id, title, authors, image, shelfId, onMove } = this.props;
+        const { id, title, authors, imageLinks, shelf, onMove } = this.props;
 
         return (
             <div className="book">
                 <div className="book-top">
-                    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: image}}></div>
+                    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${imageLinks.thumbnail})`}}></div>
                         <div className="book-shelf-changer">
-                            <select onChange={(e) => onMove(id, e.target.value)} defaultValue={shelfId}>
+                            <select onChange={(e) => onMove(id, e.target.value)} defaultValue={shelf}>
                                 {this.options.map((option) => (
                                     <option key={option.value} value={option.value} disabled={option.disabled}>{option.desc}</option>
                                 ))}

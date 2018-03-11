@@ -41,14 +41,14 @@ class Book extends React.Component {
     }
 
     render() {
-        const { book, onMove } = this.props;
+        const { book, onMove, getBookShelf } = this.props;
 
         return (
             <div className="book">
                 <div className="book-top">
                     <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})`}}></div>
                         <div className="book-shelf-changer">
-                            <select onChange={(e) => onMove(book, e.target.value)} defaultValue={book.shelf ? book.shelf : "none"}>
+                            <select onChange={(e) => onMove(book, e.target.value)} defaultValue={getBookShelf(book)}>
                                 {this.options.map((option) => (
                                     <option key={option.value} value={option.value} disabled={option.disabled}>{option.desc}</option>
                                 ))}

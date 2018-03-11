@@ -6,7 +6,8 @@ class BookShelf extends React.Component {
     static propTypes = {
         title: PropType.string.isRequired,
         bookList: PropType.array.isRequired,
-        onMove: PropType.func.isRequired
+        onMove: PropType.func.isRequired,
+        getBookShelf: PropType.func.isRequired
     };
 
     onMove(book, shelf) {
@@ -15,7 +16,7 @@ class BookShelf extends React.Component {
     };
 
     render() {
-        const { bookList, title } = this.props;
+        const { bookList, title, getBookShelf } = this.props;
 
         return (
             <div className="bookshelf">
@@ -25,7 +26,8 @@ class BookShelf extends React.Component {
                         {bookList && bookList.map((book) => (
                         <li key={book.id}>
                             <Book book={book}
-                                  onMove={(book, shelf) => this.onMove(book, shelf)}/>
+                                  onMove={(book, shelf) => this.onMove(book, shelf)}
+                                  getBookShelf={(book) => getBookShelf(book)}/>
                         </li>
                         ))}
                     </ol>

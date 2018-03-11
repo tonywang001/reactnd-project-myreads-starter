@@ -53,11 +53,21 @@ class BooksApp extends React.Component {
 
   search(query) {
     BooksAPI.search(query).then((books) => {
+      console.log('book from search: ' + books);
       this.setState({searchBookList: books});
     })
     .catch(() => {
       this.setState({searchBookList: []});
     });
+  }
+
+  getBookShelf(book) {
+    const matchedBook = this.state.bookList.filter((myBook) => myBook.id === book.id);
+    if (matchedBook && matchedBook[0]){
+      return matchedBook[0].shelf;
+    } else {
+      return 'none';
+    }
   }
 
   render() {
@@ -76,7 +86,8 @@ class BooksApp extends React.Component {
                   <BookShelf key={shelf.id} 
                              title={shelf.title} 
                              bookList={this.getBookListForShelf(shelf.id)}
-                             onMove={(book, shelf) => this.onMove(book, shelf)}/>
+                             onMove={(book, shelf) => this.onMove(book, shelf)}
+                             getBookShelf={(book) => this.getBookShelf(book)}/>
                 ))}
               </div>
             </div>
@@ -110,7 +121,8 @@ class BooksApp extends React.Component {
                   <li key={book.id}>
                     <Book book={book}
                           shelf={book.shelf}
-                          onMove={(book, shelf) => this.onMove(book, shelf)}/>
+                          onMove={(book, shelf) => this.onMove(book, shelf)}
+                          getBookShelf={(book) => this.getBookShelf(book)}/>
                   </li>
                 ))}
               </ol>

@@ -9,11 +9,9 @@ class BookShelf extends React.Component {
         onMove: PropType.func.isRequired
     };
 
-    onMove(id, shelf) {
-        console.log('book list: ' + this.props.bookList)
-        const book = this.props.bookList.filter((book) => book.id === id);
-        console.log('book -> ' + book);
-        this.props.onMove(book[0], shelf);
+    onMove(book, shelf) {
+        // const book = this.props.bookList.filter((book) => book.id === id);
+        this.props.onMove(book, shelf);
     };
 
     render() {
@@ -26,9 +24,8 @@ class BookShelf extends React.Component {
                     <ol className="books-grid">
                         {bookList && bookList.map((book) => (
                         <li key={book.id}>
-                            <Book id={book.id} title={book.title} authors={book.authors} 
-                                  imageLinks={book.imageLinks} shelfId={book.shelfId}
-                                  onMove={(id, shelf) => this.onMove(id, shelf)}/>
+                            <Book book={book} shelf={book.shelf}
+                                  onMove={(book, shelf) => this.onMove(book, shelf)}/>
                         </li>
                         ))}
                     </ol>

@@ -8,6 +8,7 @@ import Book from './Book';
 class BooksApp extends React.Component {
   state = {
     bookList: [],
+    searchBookList: [],
     shelfList: [
       {
         id: "currentlyReading",
@@ -32,17 +33,12 @@ class BooksApp extends React.Component {
 
   // Move the book to target shelf
   onMove(book, shelf) {
-    BooksAPI.update(book, shelf).then((res) => {
-      this.setState((state) => {
-        return {
-          bookList: state.bookList.map((prevBook) => {
-            if (book.id === prevBook.id) {
-              prevBook.shelf = shelf;
-            }
-            return prevBook;
-          })
-        };
-      });
+    BooksAPI.update(book, shelf)
+    .then((res) => {
+      return BooksAPI.getAll();
+    })
+    .then((books) => {
+      this.setState({bookList: books});
     })
     .catch(() => {
       console.log('Error: failed to move the book');
@@ -55,8 +51,14 @@ class BooksApp extends React.Component {
     );
   };
 
+  search(query) {
+    BooksAPI.search(query).then((books) => {
+      this.setState({searchBookList: books});
+    });
+  }
+
   render() {
-    const { bookList, shelfList } = this.state;
+    const { bookList, searchBookList, shelfList } = this.state;
 
     return (
       <div className="app">
@@ -95,17 +97,17 @@ class BooksApp extends React.Component {
                   However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
                   you don't find a specific author or title. Every search is limited by search terms.
                 */}
-                <input type="text" placeholder="Search by title or author"/>
+                <input type="text" placeholder="Search by title or author" onChange={(e) => this.search(e.target.value)}/>
 
               </div>
             </div>
             <div className="search-books-results">
               <ol className="books-grid">
-                {bookList && bookList.map((book) => (
+                {searchBookList && searchBookList.map((book) => (
                   <li key={book.id}>
-                    <Book id={book.id} title={book.title} authors={book.authors} 
-                          image={book.image} shelf={book.shelf}
-                          onMove={(id, shelf) => this.onMove(id, shelf)}/>
+                    <Book book={book}
+                          shelf={book.shelf}
+                          onMove={(book, shelf) => this.onMove(book, shelf)}/>
                   </li>
                 ))}
               </ol>

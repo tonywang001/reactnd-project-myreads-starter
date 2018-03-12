@@ -33,13 +33,35 @@ class BooksApp extends React.Component {
 
   // Move the book to target shelf
   onMove(book, shelf) {
+    this.setState((pState) => {
+      let newBookList = [];
+      let tempBookList = pState.bookList.filter((myBook) =>
+        myBook.id === book.id
+      )
+      if (tempBookList.length > 0) {
+        newBookList = pState.bookList.map((myBook) => {
+          if (myBook.id === book.id) {
+            myBook.shelf = shelf;
+          }
+          return myBook;
+        });
+      } else {
+        newBookList = pState.bookList.slice();
+        book.shelf = shelf;
+        newBookList.push(book);
+      }
+      return {
+        bookList: newBookList
+      }
+    });
+
     BooksAPI.update(book, shelf)
-    .then((res) => {
-      return BooksAPI.getAll();
-    })
-    .then((books) => {
-      this.setState({bookList: books});
-    })
+    // .then((res) => {
+    //   return BooksAPI.getAll();
+    // })
+    // .then((books) => {
+    //   this.setState({bookList: books});
+    // })
     .catch(() => {
       console.log('Error: failed to move the book');
     });
